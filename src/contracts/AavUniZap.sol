@@ -167,6 +167,12 @@ contract Helper {
     function getDai() public pure returns (address dai) {
         dai = 0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD;
     }
+    /**
+     * @dev get uni dai-eth kovan address 
+     */
+    function getExchange() public pure returns (address exchange) {
+        exchange = 0xc4F86802c76DF98079F45A60Ba906bDf86Ad90C1;
+    }
 }
 
 
@@ -242,23 +248,55 @@ interface IERC20 {
 }
 
 contract AavUniZap is Helper{
+    event UniLeveraged(
+        address indexed liquidityProvider,
+        uint256 uniTokenBalance);
     
     using SafeMath for uint256;
     /**
-     * @dev Levrage Long on your ETH/DAI Pool in Uniswap
-     * @param ethAmount - eth to deposit
+     * @dev Levrage 1x Long on your ETH/DAI Pool in Uniswap
+     * @param ethAmount - eth to deposit(The only user input) 
+     * @param maxDaiAmount - amount calulated at web3 level to save a mathmatical operation here(A very high value)
      */
-    function zappify(uint256 ethAmount) public returns(bool)
+    function zappify(uint256 ethAmount, uint256 maxDaiAmount) public returns(bool)
         {
             // Swapping 50 % ETH for DAI
             uint256 ethToSwap = (ethAmount.mul(50)).div(100);
+            
+            // Calculating Min Liquidity Cannot be 0
             uint256 minLiquidity = (ethAmount.mul(10)).div(100);
-            // using a dummy address for now will have to create a uniswap exchange
-            uint256 daiAmt = UniswapInterface(0xf88b0247e611eE5af8Cf98f5303769Cba8e7177C).ethToTokenSwapInput.value(ethToSwap)(0, block.timestamp + 300);
-            uint256 uniDai = UniswapInterface(0xf88b0247e611eE5af8Cf98f5303769Cba8e7177C).addLiquidity.value(ethToSwap)(minLiquidity, daiAmt, block.timestamp + 300);
+            
+            // Approving The exchange to spent dai
+            IERC20(getDai()).approve(getExchange(), maxDaiAmount);
+            
+            // ETH To Token Swap
+            uint256 daiAmt = UniswapInterface(getExchange()).ethToTokenSwapInput.value(ethToSwap)(0, block.timestamp + 300);
+            
+            // Adding Liquidity
+            uint256 uniDai = UniswapInterface(getExchange()).addLiquidity.value(ethToSwap)(minLiquidity, daiAmt, block.timestamp + 300);
+            
+            // Depositing UNI Token into AAVE
             // Exchange Address is the UNI Token Address
-            AaveInterface(getLendingPool()).deposit.value(0)(0xf88b0247e611eE5af8Cf98f5303769Cba8e7177C, uniDai, 0);
-            // will have to figure out a way to ensure HF doesn't drop below 1 after borrowing pinged on aave deb group to confirm collateralization ration as it isn't mentioned in docs
+            AaveInterface(getLendingPool()).deposit.value(0)(getExchange(), uniDai, 0);
+            
+            // Loan To Value Ratio for borrowing dai is 75 % so for safety keeping it as 70 %
+            uint256 daiToBorrow = (uniDai.mul(70)).div(100);
+            
+            //Borrowing Safe Amount of DAI
+            AaveInterface(getLendingPool()).borrow(getDai(), daiToBorrow, 1, 0);
+            
+            // Swapping 50 % DAI for ETH
+            uint256 daiToSwap = (daiToBorrow.mul(50)).div(100);
+            
+            // Token to ETH Swap
+            ethAmount = UniswapInterface(getExchange()).tokenToEthSwapInput(daiToSwap, 0, block.timestamp + 300);
+            
+            // Adding Liquidity
+            uniDai =  UniswapInterface(getExchange()).addLiquidity.value(ethAmount)(minLiquidity, daiToSwap, block.timestamp + 300);
+            
+            // Emmiting the Leveraged Event on Success
+            emit UniLeveraged(msg.sender, uniDai);
+            return true;
         }
 }
 
