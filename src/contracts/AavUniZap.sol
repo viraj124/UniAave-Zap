@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 interface AaveInterface {
      // Deposit 
@@ -16,6 +16,9 @@ interface UniswapInterface {
     
     // TOKEN-ETH SWAP
     function tokenToEthSwapInput(uint256 tokens_sold, uint256 min_eth, uint256 deadline) external returns (uint256  eth_bought);
+    
+    // Approve UNI tokens
+    function approve(address _spender, uint256 _value) external returns (bool);
 }
 
 library SafeMath {
@@ -156,22 +159,28 @@ library SafeMath {
 
 contract Helper {
      /**
-     * @dev get Lending Pool kovan address
+     * @dev get Lending Pool uniswap market ropsten address
      */
     function getLendingPool() public pure returns (address lendingpool) {
-        lendingpool = 0x580D4Fdc4BF8f9b5ae2fb9225D584fED4AD5375c;
+        lendingpool = 0xA03105cc79128D7d67f36401c8518695C08C7d0C;
     }
     /**
-     * @dev get aave dai kovan address 
+     * @dev get Lending Pool Core uniswap market ropsten address
+     */
+    function getLendingPoolCore() public pure returns (address lendingpoolcore) {
+        lendingpoolcore = 0x07Cdaf84340410ca8dB93bDDf77783C61032B75d;
+    }
+    /**
+     * @dev get aave dai uniswap market ropsten address 
      */
     function getDai() public pure returns (address dai) {
-        dai = 0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD;
+        dai = 0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108;
     }
     /**
-     * @dev get uni dai-eth kovan address 
+     * @dev get uni dai-eth uniswap market ropsten address 
      */
     function getExchange() public pure returns (address exchange) {
-        exchange = 0xc4F86802c76DF98079F45A60Ba906bDf86Ad90C1;
+        exchange = 0xC245A7d35E652Cae438A1FdB13E474DF53DBB81D;
     }
 }
 
@@ -255,28 +264,30 @@ contract AavUniZap is Helper{
     using SafeMath for uint256;
     /**
      * @dev Levrage 1x Long on your ETH/DAI Pool in Uniswap
-     * @param ethAmount - eth to deposit(The only user input) 
-     * @param maxDaiAmount - amount calulated at web3 level to save a mathmatical operation here(A very high value)
+     * @param maxAmount - amount calulated at web3 level to save a mathmatical operation here(A very high value)
      */
-    function zappify(uint256 ethAmount, uint256 maxDaiAmount) public returns(bool)
+    function zappify(uint256 maxAmount) public payable returns(bool)
         {
             // Swapping 50 % ETH for DAI
-            uint256 ethToSwap = (ethAmount.mul(50)).div(100);
+            uint256 ethToSwap = (msg.value).div(2);
             
-            // Calculating Min Liquidity Cannot be 0
-            uint256 minLiquidity = (ethAmount.mul(10)).div(100);
+            // Calculating Min Liquidity Cannot be 0, Min Token & Min Eth also cannot be 0 so taking a very small amount % of eth
+            uint256 minAmt = (msg.value).div(5000000);
             
-            // Approving The exchange to spent dai
-            IERC20(getDai()).approve(getExchange(), maxDaiAmount);
+            // Approving The exchange and lending pool to spent dai
+            IERC20(getDai()).approve(getExchange(), maxAmount);
             
             // ETH To Token Swap
-            uint256 daiAmt = UniswapInterface(getExchange()).ethToTokenSwapInput.value(ethToSwap)(0, block.timestamp + 300);
+            uint256 daiAmt = UniswapInterface(getExchange()).ethToTokenSwapInput.value(ethToSwap)(minAmt, block.timestamp + 300);
             
             // Adding Liquidity
-            uint256 uniDai = UniswapInterface(getExchange()).addLiquidity.value(ethToSwap)(minLiquidity, daiAmt, block.timestamp + 300);
+            uint256 uniDai = UniswapInterface(getExchange()).addLiquidity.value(ethToSwap)(minAmt, daiAmt, block.timestamp + 300);
             
             // Depositing UNI Token into AAVE
             // Exchange Address is the UNI Token Address
+            
+            UniswapInterface(getExchange()).approve(getLendingPoolCore(), maxAmount);
+
             AaveInterface(getLendingPool()).deposit.value(0)(getExchange(), uniDai, 0);
             
             // Loan To Value Ratio for borrowing dai is 75 % so for safety keeping it as 70 %
@@ -286,16 +297,22 @@ contract AavUniZap is Helper{
             AaveInterface(getLendingPool()).borrow(getDai(), daiToBorrow, 1, 0);
             
             // Swapping 50 % DAI for ETH
-            uint256 daiToSwap = (daiToBorrow.mul(50)).div(100);
+            uint256 daiToSwap = daiToBorrow.div(2);
             
             // Token to ETH Swap
-            ethAmount = UniswapInterface(getExchange()).tokenToEthSwapInput(daiToSwap, 0, block.timestamp + 300);
+            uint256 ethAmount = UniswapInterface(getExchange()).tokenToEthSwapInput(daiToSwap, minAmt, block.timestamp + 300);
             
             // Adding Liquidity
-            uniDai =  UniswapInterface(getExchange()).addLiquidity.value(ethAmount)(minLiquidity, daiToSwap, block.timestamp + 300);
+            uniDai =  UniswapInterface(getExchange()).addLiquidity.value(ethAmount)(minAmt, daiToSwap, block.timestamp + 300);
+            
+            // Depositing Again for Levergaing
+            UniswapInterface(getExchange()).approve(getLendingPoolCore(), maxAmount);
+
+            AaveInterface(getLendingPool()).deposit.value(0)(getExchange(), uniDai, 0);
             
             // Emmiting the Leveraged Event on Success
             emit UniLeveraged(msg.sender, uniDai);
+
             return true;
         }
 }
