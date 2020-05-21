@@ -5,6 +5,17 @@ interface AaveInterface {
      function deposit(address _reserve, uint256 _amount, uint16 _referralCode) external payable;
      // Borrow
      function borrow(address _reserve, uint256 _amount, uint256 _interestRateMode, uint16 _referralCode) external;
+     // User Details
+     function getUserAccountData(address _user) external view returns ( 
+            uint256 totalLiquidityETH,
+            uint256 totalCollateralETH,
+            uint256 totalBorrowsETH,
+            uint256 totalFeesETH,
+            uint256 availableBorrowsETH,
+            uint256 currentLiquidationThreshold,
+            uint256 ltv,
+            uint256 healthFactor
+        );
 }
 
 interface UniswapInterface {
@@ -259,7 +270,7 @@ interface IERC20 {
 contract AavUniZap is Helper{
     event UniLeveraged(
         address indexed liquidityProvider,
-        uint256 uniTokenBalance);
+        uint256 indexed healthFactor);
     
     using SafeMath for uint256;
     /**
@@ -285,7 +296,6 @@ contract AavUniZap is Helper{
             
             // Depositing UNI Token into AAVE
             // Exchange Address is the UNI Token Address
-            
             UniswapInterface(getExchange()).approve(getLendingPoolCore(), maxAmount);
 
             AaveInterface(getLendingPool()).deposit.value(0)(getExchange(), uniDai, 0);
@@ -300,7 +310,7 @@ contract AavUniZap is Helper{
             uint256 daiToSwap = daiToBorrow.div(2);
             
             // Token to ETH Swap
-            uint256 ethAmount = UniswapInterface(getExchange()).tokenToEthSwapInput(daiToSwap, minAmt, block.timestamp + 300);
+            uint256 ethAmount = UniswapInterface(getExchange()).tokenToEthSwapInput(daiToSwap, 10, block.timestamp + 300);
             
             // Adding Liquidity
             uniDai =  UniswapInterface(getExchange()).addLiquidity.value(ethAmount)(minAmt, daiToSwap, block.timestamp + 300);
@@ -310,11 +320,18 @@ contract AavUniZap is Helper{
 
             AaveInterface(getLendingPool()).deposit.value(0)(getExchange(), uniDai, 0);
             
+            // Getting User's Details
+            (, , , , , , , uint256 healthFactor) = AaveInterface(getLendingPool()).getUserAccountData(msg.sender);
+
             // Emmiting the Leveraged Event on Success
-            emit UniLeveraged(msg.sender, uniDai);
+            emit UniLeveraged(msg.sender, healthFactor);
 
             return true;
         }
+
+        // Fallback Functions for calldata and reciever for handling only ether transfer
+        fallback() external payable {}
+        receive() external payable {}
 }
 
 
