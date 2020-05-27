@@ -1,0 +1,67 @@
+.h1 {  
+          
+    position: absolute;
+    left: 20px;
+    top: 100px;  
+}
+
+.h3{
+         
+    position: absolute;
+    left: 20px;
+    top: 150px;    
+}
+
+.button {
+ width: 250px;
+ 
+ height: 50px;
+ background-color:#ed8c74;       
+ color: aliceblue; 
+ position: absolute;
+ left:250px;
+ top: 500px; 
+}
+
+.button4 {
+    width: 250px;
+    height: 50px;
+    background-color:#ed8c74;       
+    color: aliceblue; 
+    position: absolute;
+    left:550px;
+    top: 500px; 
+   }
+
+   
+.button2 {
+    width: 250px;
+    
+    height: 50px;
+    background-color:#ed8c74;       
+    color: aliceblue; 
+    position: absolute;
+    left:850px;
+    top: 500px; 
+   }
+
+
+
+.App-logo {
+    
+    position: absolute;
+    left: 600px;
+    top: 90px;
+    width: 300px;
+    height: 300px;
+    margin-left: 500px;
+}
+
+.App-logo1 {
+    position: absolute;
+    left: 250px;
+    top: 50px;
+    width: 300px;
+    height: 300px;
+    margin-left: 500px;
+}
