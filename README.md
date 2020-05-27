@@ -19,9 +19,8 @@ No more fuss about token approval,making multiple transactions,etc
 
 just have some ETH in your web3 wallet and just click a button,now you will be able to earn stacked yield and watch your wallet go fat(LOL).
 
-## Demo Link
+## Screenshots
 
-## Video Demo
 
 ## How to Leverage like a pro
 
@@ -46,7 +45,8 @@ All Contracts are deployed on Ropsten Network, so you just need some eth there t
 
 ## Steps to run the App
 Clone the repo
-Run npm instal
+Run npm install inside frontend & ethereum
+Navigate to frontend in cmd and run npm run start
 Navigate to http://localhost:3000 to :fire:Zapify:fire:
 
 
