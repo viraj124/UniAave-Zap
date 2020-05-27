@@ -6,6 +6,8 @@ import AavUniZap from '../abis/AavUniZap.json'
 import LendingPool from '../abis/LendingPool.json'
 import LendingPoolCore from '../abis/LendingPoolCore.json'
 
+import at from '../abis/at.json'
+
 
 
 class Zap1 extends Component {
@@ -14,16 +16,17 @@ class Zap1 extends Component {
  
     await this.loadWeb3()
     await this.loadBlockchainData()
+
     let result2 = await this.state.lendingpool.methods.getUserAccountData("0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account });
     console.log(result2)
+
     
     let result1 = await this.state.lendingpool.methods.getUserReserveData("0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108","0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account })
     console.log(result1);
-  }*/
-
+  }
+*/
 
   async loadBlockchainData() {
-
   const accounts = await this.state.web3.eth.getAccounts()
   this.setState({ account: accounts[0] })
   console.log(this.state.account);
@@ -31,6 +34,11 @@ class Zap1 extends Component {
   const ethBalance = await this.state.web3.eth.getBalance(this.state.account)
   this.setState({ ethBalance })
   console.log(ethBalance);
+  
+  const contractAddress = '0x671d05bcb540d8b7ab8fc0924e1f0213b7889554';
+  const contract = this.state.web3.eth.Contract(at, contractAddress)
+  let num = await contract.methods.underlyingAssetAddress().call({from: this.state.account})
+  console.log(num);
   
   // Load Aaveunizap
   const networkId =  await this.state.web3.eth.net.getId();
@@ -60,7 +68,7 @@ class Zap1 extends Component {
 }
 
  async loadWeb3() {
-     if (window.ethereum) {
+    if (window.ethereum) {
       const web3 = new Web3(window.ethereum)
       await window.ethereum.enable()
 	  this.setState({ web3 })
@@ -98,8 +106,7 @@ class Zap1 extends Component {
 	this.setState({buttonText:"Connected"});
 	} catch(err) {
 		this.setState({color: '#85f7ff'});
-    this.setState({buttonText: "Tryagain"});
-    console.log(err);
+		this.setState({buttonText: "Tryagain"});
 		}
 
     }
@@ -128,64 +135,8 @@ class Zap1 extends Component {
           Leveraged Zap
         </div>
 		<button onClick = {this.click} className="button1" style={{backgroundColor: this.state.color }}>{this.state.buttonText}</button>
-      
-	  </nav>
+      </nav>
       <form className="mb-3" onSubmit={(event) => {
-        event.preventDefault()
-        let etherAmount, tokenAmount
-        etherAmount = this.input.value
-        tokenAmount = etherAmount*20;
-        etherAmount = this.state.web3.utils.toWei(etherAmount.toString(), 'Ether')
-        tokenAmount = this.state.web3.utils.toWei(tokenAmount.toString(), 'Ether')
-        this.buyTokens(tokenAmount,etherAmount)
-      }}>
-      <div>
-  
-        <div className="container-fluid mt-5">
-          <div className="row">
-            <main role="main" className="col-lg-12 d-flex text-center">
-              <div className="content mr-auto ml-auto">
-           <div id="container">
-           <div className="title">aUNI-DAI-ETH Zap</div>
-
-           <div className="outer-circle">
-           <div className="inner-circle">
-           APY
-           </div>
-           </div>
-            
-          <div className="input-box">
-            <div className="eth">ETH</div>
-            <div className="amount">
-            <input
-            type="text"
-            onChange={(event) => {
-              const etherAmount = this.input.value.toString()
-              this.setState({
-                output: etherAmount
-              })
-              console.log(this.state.output);
-            }}
-            ref={(input) => { this.input = input }}
-            className="form-control form-control-lg"
-            placeholder="0"
-            required />  
-            </div>
-            <div className="zap">
-            
-      <button type="submit" className="button1">ZAP!</button>
-            </div>
-          </div>
-
-           </div>
-           <div className="health-factor">Health factor :Safe</div> 
-              </div>
-            </main>
-          </div>
-        </div>
-      </div>
-      </form>
-	  <form className="mb-3" onSubmit={(event) => {
         event.preventDefault()
         let etherAmount, tokenAmount
         etherAmount = this.input.value

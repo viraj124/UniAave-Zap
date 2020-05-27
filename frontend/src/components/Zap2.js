@@ -14,8 +14,10 @@ class Zap2 extends Component {
  
     await this.loadWeb3()
     await this.loadBlockchainData()
+
     let result2 = await this.state.lendingpool.methods.getUserAccountData("0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account });
     console.log(result2)
+
     
     let result1 = await this.state.lendingpool.methods.getUserReserveData("0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108","0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account })
     console.log(result1);
@@ -35,7 +37,7 @@ class Zap2 extends Component {
   // Load Aaveunizap
   const networkId =  await this.state.web3.eth.net.getId();
   console.log(networkId);
-  const aaveunizapdata = "0xb5A0C6C3A0FbE2BD112200209f2111dD62DFf57C"
+  const aaveunizapdata = "0x48c0d7f837fcad83e48e51e1563856fb1d898d01"
   if(aaveunizapdata) {
     const aaveunizap = new this.state.web3.eth.Contract(AavUniZap, aaveunizapdata)
     console.log(aaveunizap); 
@@ -144,7 +146,7 @@ class Zap2 extends Component {
             <main role="main" className="col-lg-12 d-flex text-center">
               <div className="content mr-auto ml-auto">
            <div id="container">
-           <div className="title">aUNI-MKR-ETH Zap</div>
+           <div className="title">aUNI-DAI-ETH Zap</div>
 
            <div className="outer-circle">
            <div className="inner-circle">
