@@ -1,5 +1,7 @@
 # :fire:Zapify:fire:
 
+:rotating_light::rotating_light:**Note: This is unaudited project,gambling your hard earned money on this is like hitting your head on wall,so plz don't invest more than your risk tolerance**:rotating_light::rotating_light:
+
 ## Introduction
 
 Have you been playing with defi ?,then your might have come across yield earning opportunities
