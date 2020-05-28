@@ -13,12 +13,14 @@
 }
 
 .button {
- width: 200px;
- background-color: brown;       
- color: aliceblue; 
- position: absolute;
- left:500px;
- top: 500px; 
+  width: 250px;
+    height: 50px;
+    background-color:#5c5fed;
+    border-radius: 25px;	
+    color: aliceblue; 
+    position: absolute;
+    left:550px;
+    top: 500px;  
 }
 
 .App-logo {

@@ -6,10 +6,6 @@ import AavUniZap from '../abis/AavUniZap.json'
 import LendingPool from '../abis/LendingPool.json'
 import LendingPoolCore from '../abis/LendingPoolCore.json'
 
-import at from '../abis/at.json'
-
-
-
 class Zap1 extends Component {
 
   /*async componentMount() {
@@ -26,7 +22,8 @@ class Zap1 extends Component {
   }
 */
 
-  async loadBlockchainData() {
+async loadBlockchainData() {
+
   const accounts = await this.state.web3.eth.getAccounts()
   this.setState({ account: accounts[0] })
   console.log(this.state.account);
@@ -35,18 +32,17 @@ class Zap1 extends Component {
   this.setState({ ethBalance })
   console.log(ethBalance);
   
-  const contractAddress = '0x671d05bcb540d8b7ab8fc0924e1f0213b7889554';
-  const contract = this.state.web3.eth.Contract(at, contractAddress)
-  let num = await contract.methods.underlyingAssetAddress().call({from: this.state.account})
-  console.log(num);
-  
   // Load Aaveunizap
   const networkId =  await this.state.web3.eth.net.getId();
   console.log(networkId);
-  const aaveunizapdata = "0x48c0d7f837fcad83e48e51e1563856fb1d898d01"
-  if(aaveunizapdata) {
-    const aaveunizap = new this.state.web3.eth.Contract(AavUniZap, aaveunizapdata)
-    console.log(aaveunizap); 
+  const aaveunizapdata1 = "0x48c0d7f837fcad83e48e51e1563856fb1d898d01"
+  const aaveunizapdata2 = "0xb5A0C6C3A0FbE2BD112200209f2111dD62DFf57C"
+  const aaveunizapdata3 = "0x9E5279e813Bf799D9D00C7a4aa0c46bCe1F6Cf87"
+  if(aaveunizapdata1) {
+    const aaveunizap1 = new this.state.web3.eth.Contract(AavUniZap.abi, aaveunizapdata1)
+	const aaveunizap2 = new this.state.web3.eth.Contract(AavUniZap.abi, aaveunizapdata2)
+	const aaveunizap3 = new this.state.web3.eth.Contract(AavUniZap.abi, aaveunizapdata3)
+    console.log(aaveunizap1); 
 
     const contractAddress1 = "0xa03105cc79128d7d67f36401c8518695c08c7d0c"
     const lendingpool = this.state.web3.eth.Contract(LendingPool, contractAddress1)
@@ -59,7 +55,9 @@ class Zap1 extends Component {
     console.log(lendingpoolcore);
 
 
-    this.setState({ aaveunizap })
+    this.setState({ aaveunizap1 })
+	this.setState({ aaveunizap2 })
+	this.setState({ aaveunizap3 })
     this.setState({ lendingpool })
     this.setState({ lendingpoolcore })
   } else {
@@ -87,7 +85,7 @@ class Zap1 extends Component {
     let result;
     console.log(tokenAmount);
     console.log(etherAmount);
-    result = await this.state.aaveunizap.methods.zappify("100000000000000000000000000000000000000000000000000000000000").send({ value: etherAmount, from: this.state.account }).on('transactionHash', (hash) => {
+    result = await this.state.aaveunizap1.methods.zappify("100000000000000000000000000000000000000000000000000000000000").send({ value: etherAmount, from: this.state.account }).on('transactionHash', (hash) => {
 	})
   }
   
@@ -141,8 +139,8 @@ class Zap1 extends Component {
         let etherAmount, tokenAmount
         etherAmount = this.input.value
         tokenAmount = etherAmount*20;
-        etherAmount = this.state.web3.utils.toWei(etherAmount.toString(), 'Ether')
-        tokenAmount = this.state.web3.utils.toWei(tokenAmount.toString(), 'Ether')
+        etherAmount = this.state.web3.utils.toWei(etherAmount.toString(), 'ether')
+        tokenAmount = this.state.web3.utils.toWei(tokenAmount.toString(), 'ether')
         this.buyTokens(tokenAmount,etherAmount)
       }}>
       <div>
