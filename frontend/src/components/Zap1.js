@@ -89,6 +89,14 @@ async loadBlockchainData() {
 	})
   }
   
+  buyTokens2 = async (tokenAmount,etherAmount) => {    
+    let result;
+    console.log(tokenAmount);
+    console.log(etherAmount);
+    result = await this.state.aaveunizap3.methods.zappify("100000000000000000000000000000000000000000000000000000000000").send({ value: etherAmount, from: this.state.account }).on('transactionHash', (hash) => {
+	})
+  }
+  
   click = async() => {
 	try {
     await this.loadWeb3()
@@ -113,7 +121,6 @@ async loadBlockchainData() {
     super(props)
     this.state = {
       account: '',
-      aaveunizap:{},
       lendingpool:{},
       lendingpoolcore:{},
       output:'',
