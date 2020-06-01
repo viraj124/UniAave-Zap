@@ -89,14 +89,25 @@ async loadBlockchainData() {
 	})
   }
   
-  buyTokens2 = async (tokenAmount,etherAmount) => {    
+  buyTokens1 = async (tokenAmount1,etherAmount1) => {    
     let result;
-    console.log(tokenAmount);
-    console.log(etherAmount);
-    result = await this.state.aaveunizap3.methods.zappify("100000000000000000000000000000000000000000000000000000000000").send({ value: etherAmount, from: this.state.account }).on('transactionHash', (hash) => {
+    console.log(tokenAmount1);
+    console.log(etherAmount1);
+    result = await this.state.aaveunizap2.methods.zappify("100000000000000000000000000000000000000000000000000000000000").send({ value: etherAmount1, from: this.state.account }).on('transactionHash', (hash) => {
 	})
   }
   
+
+  buyTokens2 = async (tokenAmount2,etherAmount2) => {    
+    let result;
+    console.log(tokenAmount2);
+    console.log(etherAmount2);
+    result = await this.state.aaveunizap3.methods.zappify("100000000000000000000000000000000000000000000000000000000000").send({ value: etherAmount2, from: this.state.account }).on('transactionHash', (hash) => {
+	})
+  }
+  
+
+
   click = async() => {
 	try {
     await this.loadWeb3()
@@ -124,6 +135,8 @@ async loadBlockchainData() {
       lendingpool:{},
       lendingpoolcore:{},
       output:'',
+      output1:'',
+      output2:'',
 	  color: '#85f7ff',
 	  buttonText: "Connect"
     }
@@ -141,6 +154,7 @@ async loadBlockchainData() {
         </div>
 		<button onClick = {this.click} className="button1" style={{backgroundColor: this.state.color }}>{this.state.buttonText}</button>
       </nav>
+      <div className="items">
       <form className="mb-3" onSubmit={(event) => {
         event.preventDefault()
         let etherAmount, tokenAmount
@@ -152,11 +166,11 @@ async loadBlockchainData() {
       }}>
       <div>
   
-        <div className="container-fluid mt-5">
+        <div className="container-fluid mt-5 container">
           <div className="row">
             <main role="main" className="col-lg-12 d-flex text-center">
               <div className="content mr-auto ml-auto">
-           <div id="container">
+           <div id="container1">
            <div className="title">aUNI-DAI-ETH Zap</div>
 
            <div className="outer-circle">
@@ -196,6 +210,120 @@ async loadBlockchainData() {
         </div>
       </div>
       </form>
+
+      <form className="mb-3" onSubmit={(event) => {
+        event.preventDefault()
+        let etherAmount1, tokenAmount1
+        etherAmount1 = this.input.value
+        tokenAmount1 = etherAmount1*20;
+        etherAmount1 = this.state.web3.utils.toWei(etherAmount1.toString(), 'ether')
+        tokenAmount1 = this.state.web3.utils.toWei(tokenAmount1.toString(), 'ether')
+        this.buyTokens1(tokenAmount1,etherAmount1)
+      }}>
+      <div>
+  
+        <div className="container-fluid mt-5">
+          <div className="row">
+            <main role="main" className="col-lg-12 d-flex text-center">
+              <div className="content mr-auto ml-auto">
+           <div id="container2">
+           <div className="title">aUNI-MKR-ETH Zap</div>
+
+           <div className="outer-circle">
+           <div className="inner-circle">
+           APY
+           </div>
+           </div>
+            
+          <div className="input-box">
+            <div className="eth">ETH</div>
+            <div className="amount">
+            <input
+            type="text"
+            onChange={(event) => {
+              const etherAmount1 = this.input.value.toString()
+              this.setState({
+                output1: etherAmount1
+              })
+              console.log(this.state.output1);
+            }}
+            ref={(input) => { this.input = input }}
+            className="form-control form-control-lg"
+            placeholder="0"
+            required />  
+            </div>
+            <div className="zap">
+            
+      <button type="submit" className="button1">ZAP!</button>
+            </div>
+          </div>
+
+           </div>
+           <div className="health-factor">Health factor :Safe</div> 
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+      </form>
+      <form className="mb-3" onSubmit={(event) => {
+        event.preventDefault()
+        let etherAmount2, tokenAmount2
+        etherAmount2 = this.input.value
+        tokenAmount2 = etherAmount2*20;
+        etherAmount2 = this.state.web3.utils.toWei(etherAmount2.toString(), 'ether')
+        tokenAmount2 = this.state.web3.utils.toWei(tokenAmount2.toString(), 'ether')
+        this.buyTokens2(tokenAmount2,etherAmount2)
+      }}>
+      <div>
+  
+        <div className="container-fluid mt-5">
+          <div className="row">
+            <main role="main" className="col-lg-12 d-flex text-center">
+              <div className="content mr-auto ml-auto">
+           <div id="container3">
+           <div className="title">aUNI-SETH-ETH Zap</div>
+
+           <div className="outer-circle">
+           <div className="inner-circle">
+           APY
+           </div>
+           </div>
+            
+          <div className="input-box">
+            <div className="eth">ETH</div>
+            <div className="amount">
+            <input
+            type="text"
+            onChange={(event) => {
+              const etherAmount2 = this.input.value.toString()
+              this.setState({
+                output2: etherAmount2
+              })
+              console.log(this.state.output2);
+            }}
+            ref={(input) => { this.input = input }}
+            className="form-control form-control-lg"
+            placeholder="0"
+            required />  
+            </div>
+            <div className="zap">
+            
+      <button type="submit" className="button1">ZAP!</button>
+            </div>
+          </div>
+
+           </div>
+           <div className="health-factor">Health factor :Safe</div> 
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+      </form>
+
+
+</div>
 	  </div>
     );
   };
