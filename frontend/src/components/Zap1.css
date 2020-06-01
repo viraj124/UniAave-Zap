@@ -1,10 +1,28 @@
 /* Styles go here */
+.items{
+  margin-top: 30px;
+  margin-left: 30px;
+  display: flex;
+  flex-direction: row 
+}
 
-#container {
-    padding:50px;
-    background-color:lightcoral;
-    border-radius: 10px;
-  }
+#container1 {
+  padding:50px;
+  background-color:lightcoral;
+  border-radius: 10px;
+}
+
+#container2 {
+  padding:50px;
+  background-color:#5cdb7e;
+  border-radius: 10px;
+}
+
+#container3 {
+  padding:50px;
+  background-color:#ebed53;
+  border-radius: 10px;
+}
   
   .outer-circle {
       height: 150px;
