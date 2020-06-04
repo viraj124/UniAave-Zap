@@ -6,7 +6,7 @@ import AavUniZap from '../abis/AavUniZap.json'
 import LendingPool from '../abis/LendingPool.json'
 import LendingPoolCore from '../abis/LendingPoolCore.json'
 
-class Zap1 extends Component {
+class Zap2 extends Component {
 
   /*async componentMount() {
  
@@ -155,23 +155,24 @@ async loadBlockchainData() {
 		<button onClick = {this.click} className="button1" style={{backgroundColor: this.state.color }}>{this.state.buttonText}</button>
       </nav>
       <div className="items">
+
       <form className="mb-3" onSubmit={(event) => {
         event.preventDefault()
-        let etherAmount, tokenAmount
-        etherAmount = this.input.value
-        tokenAmount = etherAmount*20;
-        etherAmount = this.state.web3.utils.toWei(etherAmount.toString(), 'ether')
-        tokenAmount = this.state.web3.utils.toWei(tokenAmount.toString(), 'ether')
-        this.buyTokens(tokenAmount,etherAmount)
+        let etherAmount1, tokenAmount1
+        etherAmount1 = this.input.value
+        tokenAmount1 = etherAmount1*20;
+        etherAmount1 = this.state.web3.utils.toWei(etherAmount1.toString(), 'ether')
+        tokenAmount1 = this.state.web3.utils.toWei(tokenAmount1.toString(), 'ether')
+        this.buyTokens1(tokenAmount1,etherAmount1)
       }}>
       <div>
   
-        <div className="container-fluid mt-5 container">
+        <div className="container-fluid mt-5">
           <div className="row">
             <main role="main" className="col-lg-12 d-flex text-center">
               <div className="content mr-auto ml-auto">
-           <div id="container1">
-           <div className="title">aUNI-DAI-ETH Zap</div>
+           <div id="container2">
+           <div className="title">aUNI-MKR-ETH Zap</div>
 
            <div className="outer-circle">
            <div className="inner-circle">
@@ -185,11 +186,11 @@ async loadBlockchainData() {
             <input
             type="text"
             onChange={(event) => {
-              const etherAmount = this.input.value.toString();
+              const etherAmount1 = this.input.value.toString()
               this.setState({
-                output: etherAmount
+                output1: etherAmount1
               })
-              console.log(this.state.output);
+              console.log(this.state.output1);
             }}
             ref={(input) => { this.input = input }}
             className="form-control form-control-lg"
@@ -211,11 +212,11 @@ async loadBlockchainData() {
       </div>
       </form>
 
-     
+
 </div>
 	  </div>
     );
   };
 }
 
-export default Zap1;
+export default Zap2;
