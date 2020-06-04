@@ -19,9 +19,38 @@
     border-radius: 25px;	
     color: aliceblue; 
     position: absolute;
-    left:550px;
+    left:150px;
     top: 500px;  
 }
+
+
+
+.buttonn {
+    width: 250px;
+      height: 50px;
+      background-color:#5c5fed;
+      border-radius: 25px;	
+      color: aliceblue; 
+      position: absolute;
+      left:550px;
+      top: 500px;  
+  }
+
+
+  .button2 {
+    width: 250px;
+      height: 50px;
+      background-color:#5c5fed;
+      border-radius: 25px;	
+      color: aliceblue; 
+      position: absolute;
+      left:950px;
+      top:  500px;  
+  }
+    
+
+
+
 
 .App-logo {
 

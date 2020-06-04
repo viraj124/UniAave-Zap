@@ -17,7 +17,11 @@ class Home extends Component {
       <h3 className='h3'>Get instant access to unique opportunities in open finance.</h3>
 <img src={sitting} className="App-logo" alt="logo" />
 <img src={standing} className="App-logo1" alt="logo" />
-<Link to='/zap1'><button type="submit" className="button">Go to Zaps</button></Link>
+<Link to='/zap1'><button type="submit" className="button">Go to UNI-DAI</button></Link>
+
+<Link to='/zap2'><button type="submit" className="buttonn">Go to UNI-MKR</button></Link>
+
+<Link to='/zap3'><button type="submit" className="button2">Go to UNI-SETH</button></Link>
 
 </div>
     );
