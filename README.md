@@ -33,12 +33,11 @@ just have some ETH in your web3 wallet and just click a button,now you will be a
 
 ## How to Leverage like a pro
 
-1. goto demo link
+1. Go To demo link
 2. click on any zap you want
 3. input amount of eth you are ready to invest
 4. see that your wallet has sufficient balance
-5. click zap
-6. thats it
+5. click zap and get yourself leveraged
 7. **please keep regular check on your health factor,Health factor less than one will get you liquidated**
 
 ## Zaps Available
@@ -65,7 +64,7 @@ https://aave-uniswapzaps.web.app/
 ## Note 
 All Contracts are deployed on Ropsten Network, so you just need some eth there to get started,we will support more zaps on frontend soon
 
-## verified contract addresses->ropsten
+## Verified contract addresses->ropsten
 
 1. Aave_Uni_Dai_Eth_Zap.sol
 0x48c0d7f837fcad83e48e51e1563856fb1d898d01
