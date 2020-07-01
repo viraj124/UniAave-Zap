@@ -57,6 +57,10 @@ https://ropsten.etherscan.io/tx/0x3cab57d3cd199cd2151dde192443e4574e502d1119f400
 
 https://ropsten.etherscan.io/tx/0x7afbd92af09f551d70f4850576e34aeea8dfa38a1ee3b397d6e3eb40e405e946
 
+4. leveraged long ETH/USDC zap
+-> leverage yourself on uniswap 50% USDC 50 % ETh market with increased exposure on both assets
+
+https://ropsten.etherscan.io/tx/0xfef8ba281f59ef3561bd711b0a45a311da9eced25624896ef862a30c32de67fc
 
 ## Demo link
 https://aave-uniswapzaps.web.app/
@@ -71,6 +75,8 @@ All Contracts are deployed on Ropsten Network, so you just need some eth there t
 2. [Aave_Uni_Mkr_Eth_Zap.sol](https://ropsten.etherscan.io/address/0xb5A0C6C3A0FbE2BD112200209f2111dD62DFf57C)
 
 3. [Aave_Uni_Seth_Eth_Zap.sol](https://ropsten.etherscan.io/address/0x9E5279e813Bf799D9D00C7a4aa0c46bCe1F6Cf87)
+
+4. [Aave_Uni_Usdc_Eth_Zap.sol](https://ropsten.etherscan.io/address/0x7f8ba69d2d7bd4490ab0aa35b92e29b845aab7fa#code)
 
 
 ## Note 
