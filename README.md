@@ -66,14 +66,12 @@ All Contracts are deployed on Ropsten Network, so you just need some eth there t
 
 ## Verified contract addresses->ropsten
 
-1. Aave_Uni_Dai_Eth_Zap.sol
-0x48c0d7f837fcad83e48e51e1563856fb1d898d01
+1. [Aave_Uni_Dai_Eth_Zap.sol](https://ropsten.etherscan.io/address/0x48c0d7f837fcad83e48e51e1563856fb1d898d01)
 
-2. Aave_Uni_Mkr_Eth_Zap.sol
-0xb5A0C6C3A0FbE2BD112200209f2111dD62DFf57C
+2. [Aave_Uni_Mkr_Eth_Zap.sol](https://ropsten.etherscan.io/address/0xb5A0C6C3A0FbE2BD112200209f2111dD62DFf57C)
 
-3. Aave_Uni_Seth_Eth_Zap.sol
-0x9E5279e813Bf799D9D00C7a4aa0c46bCe1F6Cf87
+3. [Aave_Uni_Seth_Eth_Zap.sol](https://ropsten.etherscan.io/address/0x9E5279e813Bf799D9D00C7a4aa0c46bCe1F6Cf87)
+
 
 ## Note 
 All Contracts are deployed on Ropsten Network, so you just need some eth there to get started
