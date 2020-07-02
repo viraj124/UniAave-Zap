@@ -8,6 +8,7 @@ import Zap2 from './Zap2.js';
 
 
 import Zap3 from './Zap3.js';
+import Zap4 from './Zap4.js';
 
 class App extends Component {
 
@@ -22,6 +23,8 @@ class App extends Component {
 
 
          <Route path='/zap3' exact component={Zap3}/>
+
+        <Route path='/zap4' exact component={Zap4}/>
 
          </Switch>
       </div>

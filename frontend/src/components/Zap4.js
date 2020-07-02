@@ -19,7 +19,7 @@ async loadBlockchainData() {
   this.setState({ ethBalance })
   
   // Load Aaveunizap  
-  const zapAddress = "0x48c0d7f837fcad83e48e51e1563856fb1d898d01"
+  const zapAddress = "0x7f8ba69d2d7bd4490ab0aa35b92e29b845aab7fa"
   const aaveunizap = new this.state.web3.eth.Contract(AavUniZap.abi, zapAddress)
   this.setState({ aaveunizap })
 }

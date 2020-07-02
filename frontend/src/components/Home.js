@@ -23,9 +23,11 @@ class Home extends Component {
 
 <Link to='/zap3'><button type="submit" className="button2">Go to UNI-SETH</button></Link>
 
+<Link to='/zap4'><button type="submit" className="button2">Go to UNI-USDC</button></Link>
+
 </div>
     );
   }
 }
 
-export default Home;
+export default Home;   

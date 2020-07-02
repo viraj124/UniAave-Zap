@@ -6,21 +6,8 @@ import AavUniZap from '../abis/AavUniZap.json'
 import LendingPool from '../abis/LendingPool.json'
 import LendingPoolCore from '../abis/LendingPoolCore.json'
 
-class Zap2 extends Component {
+class Zap4 extends Component {
 
-  /*async componentMount() {
- 
-    await this.loadWeb3()
-    await this.loadBlockchainData()
-
-    let result2 = await this.state.lendingpool.methods.getUserAccountData("0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account });
-    console.log(result2)
-
-    
-    let result1 = await this.state.lendingpool.methods.getUserReserveData("0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108","0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account })
-    console.log(result1);
-  }
-*/
 
 async loadBlockchainData() {
 
@@ -30,39 +17,11 @@ async loadBlockchainData() {
 
   const ethBalance = await this.state.web3.eth.getBalance(this.state.account)
   this.setState({ ethBalance })
-  console.log(ethBalance);
   
-  // Load Aaveunizap
-  const networkId =  await this.state.web3.eth.net.getId();
-  console.log(networkId);
-  const aaveunizapdata1 = "0x48c0d7f837fcad83e48e51e1563856fb1d898d01"
-  const aaveunizapdata2 = "0xb5A0C6C3A0FbE2BD112200209f2111dD62DFf57C"
-  const aaveunizapdata3 = "0x9E5279e813Bf799D9D00C7a4aa0c46bCe1F6Cf87"
-  if(aaveunizapdata1) {
-    const aaveunizap1 = new this.state.web3.eth.Contract(AavUniZap.abi, aaveunizapdata1)
-	const aaveunizap2 = new this.state.web3.eth.Contract(AavUniZap.abi, aaveunizapdata2)
-	const aaveunizap3 = new this.state.web3.eth.Contract(AavUniZap.abi, aaveunizapdata3)
-    console.log(aaveunizap1); 
-
-    const contractAddress1 = "0xa03105cc79128d7d67f36401c8518695c08c7d0c"
-    const lendingpool = this.state.web3.eth.Contract(LendingPool, contractAddress1)
-    console.log(lendingpool); 
-
-    const contractAddres2 = "0x07Cdaf84340410ca8dB93bDDf77783C61032B75d"
-    
-    const lendingpoolcore = this.state.web3.eth.Contract(LendingPoolCore, contractAddres2)
-
-    console.log(lendingpoolcore);
-
-
-    this.setState({ aaveunizap1 })
-	this.setState({ aaveunizap2 })
-	this.setState({ aaveunizap3 })
-    this.setState({ lendingpool })
-    this.setState({ lendingpoolcore })
-  } else {
-        window.alert('Token contract not deployed to detected network.')
-  }
+  // Load Aaveunizap  
+  const zapAddress = "0xb5A0C6C3A0FbE2BD112200209f2111dD62DFf57C"
+  const aaveunizap = new this.state.web3.eth.Contract(AavUniZap.abi, zapAddress)
+  this.setState({ aaveunizap })
 }
 
  async loadWeb3() {
@@ -81,30 +40,12 @@ async loadBlockchainData() {
   }
 
   
-  buyTokens = async (tokenAmount,etherAmount) => {    
+  buyTokens = async (etherAmount) => {  
     let result;
-    console.log(tokenAmount);
-    console.log(etherAmount);
-    result = await this.state.aaveunizap1.methods.zappify("100000000000000000000000000000000000000000000000000000000000").send({ value: etherAmount, from: this.state.account }).on('transactionHash', (hash) => {
+    result = await this.state.aaveunizap.methods.zappify("100000000000000000000000000000000000000000000000000000000000").send({ value: etherAmount, from: this.state.account }).on('transactionHash', (hash) => {
 	})
   }
   
-  buyTokens1 = async (tokenAmount1,etherAmount1) => {    
-    let result;
-    console.log(tokenAmount1);
-    console.log(etherAmount1);
-    result = await this.state.aaveunizap2.methods.zappify("100000000000000000000000000000000000000000000000000000000000").send({ value: etherAmount1, from: this.state.account }).on('transactionHash', (hash) => {
-	})
-  }
-  
-
-  buyTokens2 = async (tokenAmount2,etherAmount2) => {    
-    let result;
-    console.log(tokenAmount2);
-    console.log(etherAmount2);
-    result = await this.state.aaveunizap3.methods.zappify("100000000000000000000000000000000000000000000000000000000000").send({ value: etherAmount2, from: this.state.account }).on('transactionHash', (hash) => {
-	})
-  }
   
 
 
@@ -113,11 +54,11 @@ async loadBlockchainData() {
     await this.loadWeb3()
     await this.loadBlockchainData()
 
-    let result2 = await this.state.lendingpool.methods.getUserAccountData("0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account });
-    console.log(result2)
+    // let result2 = await this.state.lendingpool.methods.getUserAccountData("0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account });
+    // console.log(result2)
 
-    let result1 = await this.state.lendingpool.methods.getUserReserveData("0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108","0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account })
-    console.log(result1);
+    // let result1 = await this.state.lendingpool.methods.getUserReserveData("0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108","0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account })
+    // console.log(result1);
 	
 	this.setState({color: '#0ff279'});
 	this.setState({buttonText:"Connected"});
@@ -132,11 +73,6 @@ async loadBlockchainData() {
     super(props)
     this.state = {
       account: '',
-      lendingpool:{},
-      lendingpoolcore:{},
-      output:'',
-      output1:'',
-      output2:'',
 	  color: '#85f7ff',
 	  buttonText: "Connect"
     }
@@ -155,15 +91,13 @@ async loadBlockchainData() {
 		<button onClick = {this.click} className="button1" style={{backgroundColor: this.state.color }}>{this.state.buttonText}</button>
       </nav>
       <div className="items">
-
+     
       <form className="mb-3" onSubmit={(event) => {
         event.preventDefault()
-        let etherAmount1, tokenAmount1
-        etherAmount1 = this.input.value
-        tokenAmount1 = etherAmount1*20;
-        etherAmount1 = this.state.web3.utils.toWei(etherAmount1.toString(), 'ether')
-        tokenAmount1 = this.state.web3.utils.toWei(tokenAmount1.toString(), 'ether')
-        this.buyTokens1(tokenAmount1,etherAmount1)
+        let etherAmount
+        etherAmount = this.input.value
+        etherAmount = this.state.web3.utils.toWei(etherAmount.toString(), 'ether')
+        this.buyTokens(etherAmount)
       }}>
       <div>
   
@@ -171,8 +105,8 @@ async loadBlockchainData() {
           <div className="row">
             <main role="main" className="col-lg-12 d-flex text-center">
               <div className="content mr-auto ml-auto">
-           <div id="container2">
-           <div className="title">aUNI-MKR-ETH Zap</div>
+           <div id="container3">
+           <div className="title">aUNI-USDC-ETH Zap</div>
 
            <div className="outer-circle">
            <div className="inner-circle">
@@ -186,12 +120,9 @@ async loadBlockchainData() {
             <input
             type="text"
             onChange={(event) => {
-              const etherAmount1 = this.input.value.toString()
-              this.setState({
-                output1: etherAmount1
-              })
-              console.log(this.state.output1);
+              const etherAmount = this.input.value.toString()
             }}
+            
             ref={(input) => { this.input = input }}
             className="form-control form-control-lg"
             placeholder="0"
@@ -219,4 +150,4 @@ async loadBlockchainData() {
   };
 }
 
-export default Zap2;
+export default Zap4;
