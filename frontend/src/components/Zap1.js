@@ -5,6 +5,8 @@ import Web3 from 'web3';
 import AavUniZap from '../abis/AavUniZap.json'
 import LendingPool from '../abis/LendingPool.json'
 import LendingPoolCore from '../abis/LendingPoolCore.json'
+import BigNumber from 'bignumber.js'
+
 
 class Zap4 extends Component {
 
@@ -22,6 +24,14 @@ async loadBlockchainData() {
   const zapAddress = "0x48c0d7f837fcad83e48e51e1563856fb1d898d01"
   const aaveunizap = new this.state.web3.eth.Contract(AavUniZap.abi, zapAddress)
   this.setState({ aaveunizap })
+
+  const lendingpoolAddress = "0xA03105cc79128D7d67f36401c8518695C08C7d0C"
+  const lendingPool = new this.state.web3.eth.Contract(LendingPool, lendingpoolAddress)
+  const stats = await lendingPool.methods.getUserReserveData("0xf80a32a835f79d7787e8a8ee5721d0feafd78108", "0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call()
+  console.log(parseInt(stats.liquidityRate))
+  
+
+
 }
 
  async loadWeb3() {
@@ -54,15 +64,10 @@ async loadBlockchainData() {
     await this.loadWeb3()
     await this.loadBlockchainData()
 
-    // let result2 = await this.state.lendingpool.methods.getUserAccountData("0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account });
-    // console.log(result2)
-
-    // let result1 = await this.state.lendingpool.methods.getUserReserveData("0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108","0x48c0d7f837fcad83e48e51e1563856fb1d898d01").call({ from: this.state.account })
-    // console.log(result1);
-	
 	this.setState({color: '#0ff279'});
 	this.setState({buttonText:"Connected"});
 	} catch(err) {
+    console.log(err)
 		this.setState({color: '#85f7ff'});
 		this.setState({buttonText: "Tryagain"});
 		}

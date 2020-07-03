@@ -22,6 +22,10 @@ async loadBlockchainData() {
   const zapAddress = "0x9E5279e813Bf799D9D00C7a4aa0c46bCe1F6Cf87"
   const aaveunizap = new this.state.web3.eth.Contract(AavUniZap.abi, zapAddress)
   this.setState({ aaveunizap })
+  const lendingpoolAddress = "0xA03105cc79128D7d67f36401c8518695C08C7d0C"
+  const lendingPool = new this.state.web3.eth.Contract(LendingPool, lendingpoolAddress)
+  const stats = await lendingPool.methods.getUserReserveData("0xf80a32a835f79d7787e8a8ee5721d0feafd78108", "0x9E5279e813Bf799D9D00C7a4aa0c46bCe1F6Cf87").call()
+  console.log(parseInt(stats.liquidityRate))
 }
 
  async loadWeb3() {
